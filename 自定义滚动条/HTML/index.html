@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>自定义滚动条</title>
+	<style>
+		body {
+			overflow: hidden;
+		}
+		
+		* {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+		
+		#box {
+			width: 100%;
+			height: 5000px;
+			position: absolute;
+			top: 0;
+			overflow: hidden;
+			background: linear-gradient(to bottom, red, orange, yellow, green, cyan, blue, purple);
+		}
+		
+		#largescroll {
+			width: 20px;
+			height: 662px;
+			background: #000;
+			position: absolute;
+			right: 0;
+			top: 0;
+			text-align: center;
+			z-index: 20;
+		}
+		
+		#smallscroll {
+			width: 20px;
+			height: 40px;
+			background: pink;
+			position: absolute;
+		}
+
+	</style>
+	<script src="js/mouwheel.js"></script>
+</head>
+
+<body>
+	<div id="box">
+		<div class="red"></div>
+		<div class="orange"></div>
+		<div class="yellow"></div>
+		<div class="green"></div>
+		<div class="cyan"></div>
+		<div class="blue"></div>
+		<div class="purple"></div>
+	</div>
+	<div id="largescroll">
+		<div id="smallscroll"></div>
+	</div>
+
+</body>
+<script>
+	var box = document.getElementById('box');
+	var largescroll = document.getElementById('largescroll');
+	var smallscroll = document.getElementById('smallscroll');
+	var scroll = 0;
+	//计算比例
+	var clickwhilt = (box.clientHeight - largescroll.clientHeight) / (largescroll.clientHeight - smallscroll.clientHeight);
+	//点击移动
+	smallscroll.onmousedown = function(event) {
+		var e = event || window.event;
+		e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
+		var guodu = e.clientY - smallscroll.offsetTop;
+		document.onmousemove = function(event) {
+			var e = event || window.event;
+			e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
+			//	阻止浏览器的滚动条
+			e.preventDefault ? e.preventDefault() : e.returnValue = false;
+			scroll = e.clientY - guodu;
+			if (scroll <= 0) {
+				scroll = 0;
+			} else if (scroll >= largescroll.clientHeight - smallscroll.clientHeight) {
+				scroll = largescroll.clientHeight - smallscroll.clientHeight;
+			}
+			smallscroll.style.top = scroll + 'px';
+			box.style.top = -scroll * clickwhilt + 'px';
+			document.onmouseup = function() {
+				document.onmousemove = null;
+			}
+		}
+
+	}
+
+	//鼠标中键
+	document.onmousewheel = function(event) {
+		var e = event || window.event;
+		e.preventDefault ? e.preventDefault() : e.returnValue = false;
+	}
+	mouWheel(document, function() {
+		scroll -= 10;
+		if (scroll <= 0) {
+			scroll = 0
+		}
+		smallscroll.style.top = scroll + 'px';
+		box.style.top = -scroll * clickwhilt + 'px';
+	}, function() {
+		scroll += 10;
+		if (scroll >= largescroll.clientHeight - smallscroll.clientHeight) {
+			scroll = largescroll.clientHeight - smallscroll.clientHeight;
+		}
+		smallscroll.style.top = scroll + 'px';
+		box.style.top = -scroll * clickwhilt + 'px';
+	});
+	//点击滚动条黑区
+	var flag = true;
+	largescroll.onclick = function(event) {
+		var e = event || window.event;
+		e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
+		if (flag) {
+			if (e.offsetY < smallscroll.offsetTop) {
+				scroll -= 20;
+				if (scroll <= 0) {
+					scroll = 0
+				}
+				smallscroll.style.top = scroll + 'px';
+				box.style.top = -scroll * clickwhilt + 'px';
+			} else if (e.offsetY > smallscroll.offsetTop + smallscroll.clientHeight) {
+				scroll += 20;
+				if (scroll >= largescroll.clientHeight - smallscroll.clientHeight) {
+					scroll = largescroll.clientHeight - smallscroll.clientHeight;
+				}
+				smallscroll.style.top = scroll + 'px';
+				box.style.top = -scroll * clickwhilt + 'px';
+			} else {
+				flag = false;
+			}
+		}
+		flag = true;
+	}
+	//	按住滚动条黑区
+	largescroll.onmousedown = function(event) {
+		var e = event || window.event;
+		e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
+		e.timer = setInterval(fn, 100);
+
+		function fn() {
+			if (flag) {
+				if (e.offsetY < smallscroll.offsetTop) {
+					scroll -= 20;
+					if (scroll <= 0) {
+						scroll = 0
+					}
+					smallscroll.style.top = scroll + 'px';
+					box.style.top = -scroll * clickwhilt + 'px';
+				} else if (e.offsetY > smallscroll.offsetTop + smallscroll.clientHeight) {
+
+					scroll += 20;
+					if (scroll >= largescroll.clientHeight - smallscroll.clientHeight) {
+						scroll = largescroll.clientHeight - smallscroll.clientHeight;
+					}
+					smallscroll.style.top = scroll + 'px';
+					box.style.top = -scroll * clickwhilt + 'px';
+
+				} else {
+					flag = false;
+				}
+
+
+			}
+		}
+		document.onmouseup = function() {
+			clearInterval(e.timer);
+			document.onmousemove = null;
+			flag = false;
+		}
+		flag = true;
+	}
+	
+
+</script>
+
+</html>

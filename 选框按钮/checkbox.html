@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义多选框</title>
+    <style>
+        input[type="checkbox"]{
+            display: none;
+        }
+        
+        #box{
+            overflow: hidden;
+        }
+        #box label{
+            float: left;
+            height: 20px;
+            line-height: 20px;
+            padding-left: 20px;
+            margin-right: 10px;
+        }
+        .icon1{
+            background: url(images/checkbox1.png) 0 0 no-repeat;
+        }
+        .icon2{
+            background: url(images/checkbox2.png) 0 0 no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <form action="">
+        <div id="box">
+            <label for="sing" class="icon2">唱歌</label>
+            <label for="lm" class="icon2">撩妹</label>
+            <label for="lh" class="icon2">撩汉</label>
+            <label for="read" class="icon2">看书</label>
+            
+            <input type="checkbox" name="like" id="sing">
+            <input type="checkbox" name="like" id="lm">
+            <input type="checkbox" name="like" id="lh">
+            <input type="checkbox" name="like" id="read">
+        </div>
+    </form>
+</body>
+<script>
+    var labels = document.getElementById('box').getElementsByTagName('label');
+    for(var i = 0;i < labels.length;i++){
+        //标注多选框状态
+        labels[i].flag = false;
+        //绑定点击事件
+        labels[i].onclick = function(){
+            //判断当前状态
+            if(!this.flag){
+                //切换状态
+                this.className = 'icon1';
+                this.flag = true;
+            }else{
+                //切换状态
+                this.className = 'icon2';
+                this.flag = false;
+            }
+        }
+        
+    }
+</script>
+</html>

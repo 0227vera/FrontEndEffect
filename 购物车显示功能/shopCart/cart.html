@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #goods_box ul {
+            list-style: none;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        #goods_box ul li {
+            float: left;
+            overflow: hidden;
+            margin: 0 10px;
+        }
+        
+        #goods_box ul li img {
+            width: 80px;
+            height: 80px;
+            float: left;
+        }
+        
+        #goods_box ul li a span {
+            float: left;
+        }
+        
+        #goods_box input[type="number"] {
+            width: 80px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="goods_box"></div>
+</body>
+<script>
+    var storage = window.localStorage;
+    var data = JSON.parse(storage.getItem('goods_list'));
+    var box = document.getElementById('goods_box');
+    //展示购物车商品
+    for (var i = 0; i < data.length; i++) {
+        box.innerHTML += '<ul>\
+                            <li><input type="checkbox" name=""></li>\
+                            <li>\
+                                <a href="' + data[i].href + '">\
+                                    <img src="' + data[i].img_src + '" alt="">\
+                                    <span>' + data[i].title + '</span>\
+                                </a>\
+                            </li>\
+                            <li><span>' + data[i].price + '</span></li><li><input type="number" min="1" name="" value="' + data[i].number + '"></li><li><span>' + data[i].price * data[i].number + '</span></li><li><input type="button" value="删除"><input type="hidden" value="' + data[i].g_id + '"></li>\
+                        </ul>';
+    }
+    //删除对应的商品及其数据
+    box.onclick = function(event) {
+        var e = event || window.event;
+        //删除对应的商品
+        var ele = e.target || e.srcElement;
+        if (ele.value == '删除') {
+            box.removeChild(ele.parentNode.parentNode);
+            //删除对应的数据
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].g_id == ele.nextSibling.value) {
+                    data.splice(i, 1);
+                }
+            }
+            storage.setItem('goods_list', JSON.stringify(data));
+        }
+    }
+    box.onchange = function(event) {
+        var e = event || window.event;
+        var ele = e.target || e.srcElement;
+        //改变商品数量，小计，数据中商品的数量
+        if (ele.type == 'number') {
+            //改变小计的内容
+            ele.parentNode.nextSibling.firstElementChild.innerHTML = ele.value * ele.parentNode.previousSibling.firstElementChild.innerHTML;
+            //改变locaStorage中商品的数量
+            var ele_id = ele.parentNode.nextSibling.nextSibling.lastChild;
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].g_id == ele_id.value) {
+                    data[i].number = ele.value;
+                    data.splice(i, 1, data[i]);
+                }
+            }
+            storage.setItem('goods_list', JSON.stringify(data));
+        }
+    }
+
+</script>
+
+</html>

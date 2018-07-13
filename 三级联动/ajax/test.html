@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ajax</title>
+</head>
+
+<body>
+</body>
+<script>
+    //异步(并发)：同一时间点，同时有多个程序在执行，互不影响
+    //同步：同一时间点，只有一个程序在执行，其他程序都在排队等候
+    var result;
+    //创建请求对象
+    var xhr = new XMLHttpRequest();//new ActiveXObject('Microsoft.XMLHTTP')//IE6-
+    //拨号
+    xhr.open("GET",'json/address.json',true);
+    //等待响应
+    xhr.onreadystatechange = function(){
+        //等待状态完成
+        if(xhr.readyState==4&&xhr.status==200){
+            //获取响应结果
+            result = xhr.responseText;
+            //document.write(result);
+            //document.body.innerHTML = result;
+            var o_result = JSON.parse(result);
+            o_result.forEach(function(item,index){
+                console.log(item.Name);
+            })
+        }
+    }
+    //POST请求发送数据的位置
+    xhr.send(null);
+    //console.log(result); //undefined
+</script>
+</html>

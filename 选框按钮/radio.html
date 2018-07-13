@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>自定义样式单选框</title>
+    <style>
+        input[type="radio"]{
+            display: none;
+        }
+        .box{
+            overflow: hidden;
+        }
+        .box label{
+            float: left;
+            height: 16px;
+            font-size: 14px;
+            line-height: 16px;
+            padding-left: 16px;
+            margin-right: 20px;
+        }
+        .icon1{
+            background: url(images/radio1.png) 0 0 no-repeat;
+        }
+        .icon2{
+            background: url(images/radio2.png) 0 0 no-repeat;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="">
+        <div class="box" id="box">
+            <label for="man" class="icon1">男</label>
+            <label for="woman" class="icon2">女</label>
+            
+            <input type="radio" name="sex" checked="checked" id="man">
+            <input type="radio" name="sex" id="woman">
+        </div>
+    </form>
+
+</body>
+<script>
+    var labels = document.getElementById('box').getElementsByTagName('label');
+    
+    for(var i = 0;i< labels.length;i++){
+        //绑定点击事件
+        labels[i].onclick = function(){ 
+            //将所有的label置为未选中状态
+            for(var j = 0;j< labels.length;j++){
+                labels[j].className = 'icon2';
+            }
+            //将点击的label置为选中状态
+            this.className = 'icon1';
+        } 
+    }
+</script>
+</html>

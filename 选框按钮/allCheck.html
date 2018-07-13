@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>全选/全不选</title>
+</head>
+
+<body>
+    <form action="">
+        <div>
+            <input type="checkbox" name="" id="all"><span>全选/全不选</span>
+            <input type="checkbox" name="" id="reverse"><span>反选</span>
+        </div>
+        <div id="select_box">
+            <p><input type="checkbox" name="" id="">1</p>
+            <p><input type="checkbox" name="" id="">2</p>
+            <p><input type="checkbox" name="" id="">3</p>
+            <p><input type="checkbox" name="" id="">4</p>
+            <p><input type="checkbox" name="" id="">5</p>
+            <p><input type="checkbox" name="" id="">6</p>
+            <p><input type="checkbox" name="" id="">7</p>
+            <p><input type="checkbox" name="" id="">8</p>
+            <p><input type="checkbox" name="" id="">9</p>
+            <p><input type="checkbox" name="" id="">10</p>
+        </div>
+    </form>
+</body>
+<script>
+    var all = document.getElementById('all');
+    var rev = document.getElementById('reverse');
+    var option = document.getElementById('select_box').getElementsByTagName('input');
+    //全选/全不选
+    all.onchange = function() {
+        if (this.checked) {
+            for (var i = 0; i < option.length; i++) {
+                option[i].checked = true;
+            }
+        } else {
+            for (var i = 0; i < option.length; i++) {
+                option[i].checked = false;
+            }
+        }
+    }
+
+    //反选
+    rev.onchange = function() {
+        //设置全选状态
+        var flag = true;
+        //遍历每个子选项
+        for (var i = 0; i < option.length; i++) {
+            //反转子选项状态
+            if (option[i].checked) {
+                option[i].checked = false;
+            } else {
+                option[i].checked = true;
+                
+            }
+            //判断每任意子选项状态是否为false
+            if(!option[i].checked){
+                flag = false;
+            }
+        }
+        //改变全选/全不选的状态
+        all.checked = flag;
+    }
+    
+    
+    for (var j = 0; j < option.length; j++) {
+        option[j].onchange = function() {
+            rev.checked = false;
+            //设置初始状态
+            var flag = true;
+            //遍历每一个选项
+            for (var i = 0; i < option.length; i++) {
+                //判断每个选项的状态
+                //如果有任何一个选项的状态为false，则将flag置为false
+                if(!option[i].checked){
+                    flag = false;
+                }
+            }
+            //设置全选/全不选的状态
+            all.checked = flag;
+        }
+    }
+
+</script>
+
+</html>

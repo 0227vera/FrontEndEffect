@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>赞666</title>
+	<style>
+		#box {
+			width: 200px;
+			height: 600px;
+			position: relative;
+			margin: 0 auto;
+		}
+		
+		.block {
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			position: absolute;
+			top: 600px;
+			
+		}
+		i{
+			width: 32px;
+			height: 32px;
+			margin: 9px 14px 9px 4px;
+			display: block;
+			font-size: 30px;
+			background: url(good.png) 0 0 no-repeat;
+		}
+		button {
+			width: 50px;
+			height: 50px;
+			background-color: cyan;
+			border-radius: 50%;
+			border: none;
+			margin-left: 560px;
+            outline: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="box"></div>
+	<button id="btn"><i>6</i></button>
+
+</body>
+<script>
+	var block = document.getElementsByClassName('block');
+	var box = document.getElementById('box');
+	var btn = document.getElementById('btn');	
+	btn.onclick = function() {
+		var odiv = document.createElement('div');
+		var oi = document.createElement('i');
+		box.appendChild(odiv);
+		odiv.appendChild(oi);
+		oi.innerHTML='6';
+		odiv.className = 'block';
+		var r = Math.floor(Math.random() * 256);
+		var g = Math.floor(Math.random() * 256);
+		var b = Math.floor(Math.random() * 256);
+		odiv.style.background = 'rgb(' + r + ',' + g + ',' + b + ')';		
+		var x = 0;		
+		odiv.timer = setInterval(function() {
+			x -= 1;
+			var y = 100 * Math.sin(x  * Math.PI / 180);
+			odiv.style.left = y  + 'px';
+			odiv.style.top = x + 600 + 'px';
+			if(x<=-630){
+				clearInterval(odiv.timer);
+				box.removeChild(odiv);
+			}
+		}, 10);
+		
+	}
+
+</script>
+
+</html>

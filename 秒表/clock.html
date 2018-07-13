@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>秒表</title>
+    <style>
+        .box {
+            width: 400px;
+            margin: 100px auto;
+            text-align: center;
+        }
+        
+        .p1 {
+            font-size: 40px;
+            margin: 0 auto;
+        }
+        
+        .p1 span {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #042031;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+        
+        .p2 span {
+            display: inline-block;
+            width: 80px;
+            height: 50px;
+            font-size: 30px;
+            background: #0bc9f7;
+            color: bisque;
+            border-radius: 5px;
+            line-height: 50px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <p class="p1">
+            <span id="min">00</span>:<span id="sec">00</span>:<span id="ms">00</span>
+        </p>
+        <p class="p2">
+            <span id="start">开始</span>
+            <span id="times">计次</span>
+            <span id="reset">复位</span>
+        </p>
+        <div id="jici"></div>
+    </div>
+</body>
+<script>
+    //获取html元素
+    function $(id) {
+        return document.getElementById(id);
+    }
+    //初始化数据
+    var ms = 0;
+    var sec = 0;
+    var min = 0;
+    var flag = true;
+    var timer;
+    //添加开始/暂停功能
+    $('start').onclick = function() {
+        //判断秒表状态
+        if (flag) {
+            //启动秒表
+            timer = setInterval(function() {
+                //毫秒数递增
+                ms++;
+                //判断进位，且重新开始计数
+                if (ms == 100) {
+                    ms = 0;
+                    sec++;
+                }
+                if (sec == 60) {
+                    sec = 0;
+                    min++;
+                }
+                //判断是否为一位数，补0
+                if (ms < 10) {
+                    $('ms').innerHTML = '0' + ms;
+                } else {
+                    $('ms').innerHTML = ms;
+                }
+
+                if (sec < 10) {
+                    $('sec').innerHTML = '0' + sec;
+                } else {
+                    $('sec').innerHTML = sec;
+                }
+
+                if (min < 10) {
+                    $('min').innerHTML = '0' + min;
+                } else {
+                    $('min').innerHTML = min;
+                }
+
+            }, 10)
+            //更新开关状态为正在执行
+            flag = false;
+            $('start').innerHTML = '暂停';
+        } else {
+            //暂停秒表
+            clearInterval(timer);
+            //更新开关状态为暂停
+            flag = true;
+            $('start').innerHTML = '开始';
+        }
+
+    }
+    //计次功能
+    $('times').onclick = function() {
+        //判断秒表状态
+        if (!flag) {
+            //判断是否为一位数，补0
+            var ms1 = (ms < 10 ? ('0' + ms) : ms);
+            var sec1 = (sec < 10 ? ('0' + sec) : sec);
+            var min1 = (min < 10 ? ('0' + min) : min);
+
+            $('jici').innerHTML += '<p>' + min1 + ':' + sec1 + ':' + ms1 + '</p>';
+        }
+
+    }
+    $('reset').onclick = function() {
+        //复位，所有变量，元素回归初始状态
+        clearInterval(timer);
+        $('ms').innerHTML = '00';
+        $('sec').innerHTML = '00';
+        $('min').innerHTML = '00';
+
+        ms = 0;
+        sec = 0;
+        min = 0;
+
+        $('jici').innerHTML = '';
+        flag = true;
+        $('start').innerHTML = '开始';
+    }
+
+</script>
+
+</html>

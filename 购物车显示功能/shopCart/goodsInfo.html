@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>商品详情</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #goods_box {
+            overflow: hidden;
+            width: 960px;
+        }
+        
+        #goods_box>div:first-child {
+            float: left;
+        }
+        
+        #goods_box>div:last-child {
+            float: right;
+        }
+        
+        #goods_style,
+        #goods_size {
+            list-style: none;
+            overflow: hidden;
+            width: 600px;
+        }
+        
+        #goods_style li,
+        #goods_size li {
+            float: left;
+            padding: 5px 5px;
+            border: 1px solid #dddddd;
+            margin: 0 10px 10px 0;
+            cursor: pointer;
+        }
+        
+        #goods_style li:hover,
+        #goods_size li:hover {
+            border-color: red;
+        }
+        
+        #goods_style .checked,
+        #goods_size .checked {
+            border-color: red;
+        }
+        
+        #add_cart {
+            width: 100px;
+            height: 40px;
+            background: red;
+            color: #ffffff;
+            font-size: 18px;
+            border: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="goods_box">
+        <div id="goods_left">
+            <img src="images/p1.jpg" alt="">
+        </div>
+        <div id="goods_right">
+            <h3 id="goods_title">恒源祥 男女薄款纯棉打底保暖内衣套装 情侣秋衣秋裤套装</h3>
+            <p>￥
+                <span id="goods_price">69.00</span>
+                <input type="hidden" name="goods_id" id="goods_id" value="1003">
+            </p>
+            <ul id="goods_style">
+                <li>男款红色</li>
+                <li>男款黑色</li>
+                <li>男款骚粉色</li>
+                <li>男款宝蓝色</li>
+                <li class="checked">男款咖啡色</li>
+                <li>女款红色</li>
+                <li>女款黑色</li>
+                <li>女款粉色</li>
+                <li>女款宝蓝色</li>
+                <li>女款咖啡色</li>
+            </ul>
+            <ul id="goods_size">
+                <li>S</li>
+                <li>M</li>
+                <li class="checked">L</li>
+                <li>XL</li>
+                <li>XXL</li>
+            </ul>
+            <p><input type="number" min="1" max="199" name="goods_number" id="goods_number" value="1"><input type="button" value="加入购物车" id="add_cart"></p>
+        </div>
+    </div>
+</body>
+<script>
+    var goods_id = document.getElementById('goods_id');
+    var goods_left = document.getElementById('goods_left');
+    var goods_title = document.getElementById('goods_title');
+    var goods_price = document.getElementById('goods_price');
+    var goods_number = document.getElementById('goods_number');
+    var goods_style = document.getElementById('goods_style');
+    var goods_size = document.getElementById('goods_size');
+    var add_cart = document.getElementById('add_cart');
+    //选择款式，尺码
+    goods_size.onclick = goods_style.onclick = function(event) {
+        var e = event || window.event;
+        var ele = e.target || e.srcElement;
+        var cells = this.children;
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].className = '';
+        }
+        ele.className = 'checked';
+    }
+    //加入购物车（存储localStorage）
+    add_cart.onclick = function() {
+        var title = goods_title.innerHTML;
+        var img_src = goods_left.children[0].src;
+        var price = goods_price.innerHTML;
+        var number = goods_number.value;
+        var href = window.location.href;
+        var g_id = goods_id.value;
+        //一件商品要存储的相关信息
+        var goods_obj = {
+            title: title,
+            img_src: img_src,
+            price: price,
+            number: number,
+            href: href,
+            g_id: g_id
+        }
+        var storage = window.localStorage;
+        //判断购物车是否为空
+        if (!storage.getItem('goods_list')) {
+            var g_list = [];
+            g_list.push(goods_obj);
+        } else {
+            var g_list = JSON.parse(storage.getItem('goods_list'));
+            //判断将要添加的商品是否已经存在，如果存在则只改变数量
+            var flag = false;
+            for (var i = 0; i < g_list.length; i++) {
+                if (goods_obj.g_id == g_list[i].g_id) {
+                    goods_obj.number = Number(goods_obj.number) + Number(g_list[i].number);
+                    g_list.splice(i,1,goods_obj);
+                    flag = true;
+                }
+            } 
+            if(!flag){
+                g_list.push(goods_obj);
+            }
+        }
+        storage.setItem('goods_list', JSON.stringify(g_list));
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一键置顶</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .block{
+            width: 100%;
+            height: 3000px;
+            background: #eeeeee;
+        }
+        #btn{
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            font-size: 30px;
+            background: #3388ff;
+            color:#ffffff;
+            right: 20px;
+            bottom: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="block"></div>
+    <div id="btn">↑</div>
+</body>
+<script>
+    var btn = document.getElementById('btn');
+    var timer;
+    btn.onclick = function(){
+        var scrollT = document.documentElement.scrollTop || document.body.scrollTop;
+        var step = scrollT/20;
+        timer = setInterval(function (){
+            scrollT -= step;
+            window.scrollTo(0,scrollT);
+            if(scrollT <= 0){
+                clearInterval(timer);
+            }
+        },10)
+    }
+</script>
+</html>

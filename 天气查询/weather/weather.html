@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>天气查询</title>
+    <script src="js/ajax.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+        
+        #weather_box {
+            width: 600px;
+            height: 400px;
+            border: 1px solid red;
+        }
+        
+        #weather_box header {
+            font-size: 18px;
+        }
+        
+        #weather_box ul {
+            list-style: none;
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        #weather_box ul li {
+            float: left;
+        }
+        
+        .oUl1 {
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .oUl1 li {
+            width: 100px;
+        }
+        
+        .oUl1 .weather_now {
+            width: 200px;
+        }
+        
+        .oUl1 li p {
+            line-height: 40px;
+        }
+        
+        .oUl1 .weather_now p {
+            font-size: 24px;
+        }
+        
+        .oUl2 li {
+            width: 300px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <form>
+        <input type="text" name="" id="c_name" placeholder="请输入城市名称,例如:北京">
+        <input type="button" id="search" value="查询">
+    </form>
+    <div id="weather_box">
+        <header id="date_now"></header>
+        <ul class="oUl1" id="oUl1">
+            <li class="weather_now">
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </li>
+            <li>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </li>
+            <li>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </li>
+            <li>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </li>
+            <li>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </li>
+        </ul>
+        <ul class="oUl2" id="oUl2">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</body>
+<script>
+    var c_name = document.getElementById('c_name');
+    var search = document.getElementById('search');
+
+    var date_now = document.getElementById('date_now');
+    var oUl1 = document.getElementById('oUl1');
+    var oUl2_lis = document.getElementById('oUl2').getElementsByTagName('li');
+    search.onclick = function() {
+        var cityname = c_name.value;
+        ajax({
+            type: 'get',
+            url: 'php/do.php',
+            data: 'cityname=' + cityname,
+            success: function(r) {
+                var result = JSON.parse(r).result;
+                //头部信息
+                date_now.innerHTML = result.city + '&nbsp;' + result.date + '&nbsp;' + result.week;
+                //当前实时天气
+                oUl1.children[0].children[0].innerHTML = result.temp + '℃';
+                oUl1.children[0].children[1].innerHTML = result.templow + '~' + result.temphigh + '℃';
+                oUl1.children[0].children[2].innerHTML = result.weather;
+                oUl1.children[0].children[3].innerHTML = result.winddirect + '&nbsp;' + result.windpower;
+                //未来四天的天气
+                for (var i = 1; i <= 4; i++) {
+                    //日期
+                    oUl1.children[i].children[0].innerHTML = '<span>' + result.daily[i].week + '</span><br><em>' + result.daily[i].date + '</em>';
+                    //气温
+                    oUl1.children[i].children[1].innerHTML = result.daily[i].night.templow + '~' + result.daily[i].day.temphigh + '℃';
+                    //天气
+                    if (result.daily[i].night.weather == result.daily[i].day.weather) {
+                        var we = result.daily[i].night.weather;
+                    } else {
+                        var we = result.daily[i].day.weather + '转' + result.daily[i].night.weather;
+                    }
+                    oUl1.children[i].children[2].innerHTML = we;
+                    //风向风力
+                    oUl1.children[i].children[3].innerHTML = result.daily[i].day.winddirect + '&nbsp' + result.daily[i].day.windpower;
+                }
+
+                //相关参数
+                for (var j = 0; j < oUl2_lis.length; j++) {
+                    oUl2_lis[j].innerHTML = result.index[j].iname + ':' + result.index[j].ivalue;
+                }
+
+            }
+        })
+    }
+
+</script>
+
+</html>

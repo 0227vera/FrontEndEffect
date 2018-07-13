@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>导航栏</title>
+    <script src="js/animate.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        li {
+            list-style: none;
+        }
+        
+        nav {
+            width: 100%;
+            background: #01204f;
+        }
+        
+        .nav_box {
+            width: 984px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .clear {
+            zoom: 1;
+        }
+        
+        .clear:after {
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+            overflow: hidden;
+        }
+        
+        #oUl {
+            position: relative;
+            width: 984px;
+            z-index: 10;
+        }
+        
+        #oUl li {
+            float: left;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 10px;
+        }
+        
+        #oUl li:first-child {
+            background: red;
+        }
+        
+        #oUl li a {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            font-family: "宋体";
+            text-decoration: none;
+        }
+        
+        #ball {
+            width: 48px;
+            height: 40px;
+            background: red;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav_box">
+            <div id="ball"></div>
+            <ul id="oUl" class="clear">
+                <li><a href="#">首页</a></li>
+                <li><a href="#">百家号</a></li>
+                <li><a href="#">国内</a></li>
+                <li><a href="#">国际</a></li>
+                <li><a href="#">军事</a></li>
+                <li><a href="#">社会</a></li>
+                <li><a href="#">财经</a></li>
+                <li><a href="#">娱乐</a></li>
+                <li><a href="#">体育</a></li>
+                <li><a href="#">互联网</a></li>
+                <li><a href="#">科技</a></li>
+                <li><a href="#">游戏</a></li>
+                <li><a href="#">时尚</a></li>
+                <li><a href="#">女人</a></li>
+                <li><a href="#">汽车</a></li>
+                <li><a href="#">个性推荐</a></li>
+                <li><a href="#">更多</a></li>
+            </ul>
+        </div>
+    </nav>
+</body>
+<script>
+    var oLis = document.getElementById('oUl').getElementsByTagName('li');
+    var ball = document.getElementById('ball');
+
+    for (var i = 0; i < oLis.length; i++) {
+        oLis[i].onmouseover = function() {
+            
+            animate(ball, {
+                "left": this.offsetLeft,
+                "width": this.offsetWidth
+            }, 200);
+            
+            this.onmouseout = function() {
+                animate(ball, {
+                    "left": 0,
+                    "width": 48
+                }, 200);
+                
+            }
+        }
+    }
+
+</script>
+
+</html>

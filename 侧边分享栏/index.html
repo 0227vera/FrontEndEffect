@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>分享</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		#box {
+			height: 500px;
+			width: 500px;
+			margin-top: 100px;
+			position: absolute;
+			left: -450px;
+		}
+		
+		#pink {
+			height: 500px;
+			width: 450px;
+			background: pink;
+			position: absolute;
+			text-align: center;
+		}
+		
+		#pink h1 {
+			margin-bottom: 20px;
+		}
+		
+		#pink p {
+			height: 27px;
+			font-size: 24px
+		}
+		
+		#cyan {
+			height: 100px;
+			width: 50px;
+			background: cyan;
+			text-align: center;
+			font-size: 30px;
+			position: absolute;
+			right: 0;
+			top: 0;
+		}
+		
+		#cyan:hover {
+			cursor: pointer;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div id="box">
+		<div id="pink">
+			<h1>从前慢</h1>
+			<p>记得早先少年时</p>
+			<p>大家诚诚恳恳</p>
+			<p>说一句 是一句</p>
+			<p></p>
+			<p>清早上火车站</p>
+			<p>长街黑暗无行人</p>
+			<p>卖豆浆的小店冒着热气</p>
+			<p></p>
+			<p>从前的日色变得慢</p>
+			<p>车，马，邮件都慢</p>
+			<p>一生只够爱一个人</p>
+			<p></p>
+			<p>从前的锁也好看</p>
+			<p>钥匙精美有样子</p>
+			<p>你锁了 人家就懂了</p>
+		</div>
+		<div id="cyan">分享</div>
+	</div>
+</body>
+<script>
+	//获取页面的id
+	var box = document.getElementById('box');
+	var cyan = document.getElementById('cyan');
+	//内容隐藏时用的初始值
+	var count = 10;
+	//内容需要隐藏时的初始值
+	var count1 = 0;
+	//设置开关
+	var flag = true;
+	//两个计时器
+	var timer;
+	var timer1;
+	cyan.onclick = function() {
+		if (flag) {
+			clearInterval(timer);
+			clearInterval(timer1);
+			timer = setInterval(fun, 100);
+
+			function fun() {
+				//left每次改变45px,以免卡顿,两个终结点的判断并且重新赋值以便下次试用
+				count--;
+				if (count >= 0) {
+
+					box.style.left = -count * 45 + "px";
+				} else {
+					clearInterval(timer);
+					clearInterval(timer1);
+					count = 10;
+				}
+			}
+			flag = false;
+		} else {
+			clearInterval(timer1);
+			clearInterval(timer);
+			timer1 = setInterval(fun1, 100);
+			function fun1() {
+				count1++;
+				if (count1 <= 10) {
+					box.style.left = -count1 * 45 + "px";
+				} else {
+					clearInterval(timer1);
+					clearInterval(timer);
+					count1 = 0;
+				}
+			}
+			flag = true;
+		}
+
+	}
+
+</script>
+
+</html>

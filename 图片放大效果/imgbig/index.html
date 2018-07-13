@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>图片局部放大</title>
+    <script src="js/mouwheel.js"></script>
+    <style>
+        #imgBox {
+            width: 640px;
+            height: 400px;
+            overflow: hidden;
+        }
+        
+        #img {
+            width: 640px;
+            height: 400px;
+            display: block;
+            border: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="imgBox"><img id="img" src="images/p1.jpg" alt=""></div>
+</body>
+<script>
+    var box = document.getElementById('imgBox');
+    var img = document.getElementById('img');
+    var scale = 100;
+    box.onmousemove = function(event) {
+        var e = event || window.event;
+        var mouX = e.offsetX || e.layerX;
+        var mouY = e.offsetY || e.layerY;
+        img.style.transformOrigin = mouX + 'px ' + mouY + 'px';
+    }
+    mouWheel(box, function() {
+        scale += 5;
+        if (scale >= 300) {
+            scale = 300
+        }
+        img.style.transform = 'scale(' + (scale / 100) + ')';
+    }, function() {
+        scale -= 5;
+        if (scale <= 100) {
+            scale = 100
+        }
+        img.style.transform = 'scale(' + (scale / 100) + ')';
+    })
+
+</script>
+
+</html>

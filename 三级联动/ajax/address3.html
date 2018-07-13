@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>省市区三级联动地址选择</title>
+    <style>
+        form {
+            width: 450px;
+            margin: 100px auto;
+        }
+        
+        select {
+            display: inline-block;
+            width: 140px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <form>
+        <select name="pro" id="pro">
+            <option value="">请选择省份</option>
+        </select>
+        <select name="city" id="city">
+            <option value="">请选择城市</option>
+        </select>
+        <select name="area" id="area">
+            <option value="">请选择县区</option>
+        </select>
+    </form>
+</body>
+<script>
+    var pro = document.getElementById('pro');
+    var city = document.getElementById('city');
+    var area = document.getElementById('area');
+
+    //ajax请求数据
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', 'json/address.json', true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var data = JSON.parse(xhr.responseText);
+            handle(data);
+        }
+    }
+    xhr.send(null);
+
+    function handle(d) {
+        //初始化省份选项
+        d.forEach(function(item, index) {
+            pro.innerHTML += '<option value="' + index + '">' + item.Name + '</option>';
+        });
+        //选中省份后，创建对应的城市列表
+        pro.onchange = function() {
+            city.innerHTML = '<option value="">请选择城市</option>';
+            area.innerHTML = '<option value="">请选择县区</option>';
+            d[this.value].City.forEach(function(item, index) {
+                city.innerHTML += '<option value="' + index + '">' + item.Name + '</option>';
+            });
+        }
+        //选中城市后，创建对应县区
+        city.onchange = function() {
+            area.innerHTML = '<option value="">请选择县区</option>';
+            //判断是否为直辖市或者特别行政区
+            if (d[pro.value].City[this.value].Region) {
+                d[pro.value].City[this.value].Region.forEach(function(item, index) {
+                    area.innerHTML += '<option value="' + index + '">' + item.Name + '</option>';
+                })
+            }else{
+                area.innerHTML += '<option>' + d[pro.value].City[this.value].Name + '</option>';
+            }
+        }
+    }
+
+</script>
+
+</html>

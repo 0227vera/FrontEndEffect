@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>淡入淡出</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div id="box">
+		<ul id="img">
+			<li>
+				<a href="##"><img src="images/1.jpg" alt=""></a>
+			</li>
+			<li>
+				<a href="##"><img src="images/2.jpg" alt=""></a>
+			</li>
+			<li>
+				<a href="##"><img src="images/3.jpg" alt=""></a>
+			</li>
+			<li>
+				<a href="##"><img src="images/4.jpg" alt=""></a>
+			</li>
+			<li>
+				<a href="##"><img src="images/5.jpg" alt=""></a>
+			</li>
+
+
+		</ul>
+		<ul id="scrollbox">
+			<li class="high_light"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<button id="goprev" class="hide">&lt;</button>
+		<button id="gonext" class="hide">&gt;</button>
+	</div>
+</body>
+<script src="js/animate.min.js"></script>
+<script>
+	//获取页面id
+	var obox = document.getElementById('box');
+	var oimg = document.getElementById('img').getElementsByTagName('li');
+	var oscrollbox = document.getElementById('scrollbox').getElementsByTagName('li');
+	var ogoprev = document.getElementById('goprev');
+	var ogonext = document.getElementById('gonext');
+	//初始值即方向
+	obox.index = 0;
+	obox.direction = 1;
+	//计时器函数
+	function showhide() {
+		obox.timer ? clearTimeout(obox.timer) : null;
+		obox.timer = setTimeout(showhh, 1000);
+	}
+	showhide();
+	//主要运动函数
+	function showhh() {
+		obox.index += obox.direction;
+		//终结点判断即该改变
+		if (obox.index == 5) {
+			obox.index = 0;
+		} else if (obox.index == -1) {
+			obox.index = 4;
+		}
+		for (var i = 0; i < oimg.length; i++) {
+			animate(oimg[i], {
+				opacity: 0
+			}, 300, function() {
+				showhide()
+			})
+			oimg[i].style.zIndex = 5;
+			oscrollbox[i].className = '';
+		}
+		console.log(obox.index);
+		//		运动函数的调用
+		animate(oimg[obox.index], {
+			opacity: 1
+		}, 300, function() {
+			showhide()
+		})
+		oimg[obox.index].style.zIndex = 20;
+		oscrollbox[obox.index].className = 'high_light';
+	}
+	//	跟随灯hover效果事件
+	function trun() {
+		for (var j = 0; j < oscrollbox.length; j++) {
+			oscrollbox[j].index = j;
+			oscrollbox[j].onmouseover = function() {
+				clearTimeout(obox.timer);
+				obox.index = this.index - 1;
+				showhh();
+				for (var i = 0; i < oscrollbox.length; i++) {
+					oscrollbox[i].className = '';
+				}
+				oscrollbox[obox.index].className = 'high_light';
+			}
+		}
+	}
+	trun();
+	//	两侧方向点击事件
+	function buttons() {
+		ogoprev.onclick = function() {
+			clearTimeout(obox.timer);
+			obox.direction = -1;
+			showhh();
+		}
+		ogonext.onclick = function() {
+			clearTimeout(obox.timer);
+			obox.direction = 1;
+			showhh();
+		}
+	}
+	buttons();
+
+</script>
+
+</html>

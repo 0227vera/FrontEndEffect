@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>放大镜</title>
+    <style>
+        #box {
+            width: 480px;
+            height: 300px;
+            position: relative;
+            margin: 1000px 0;
+        }
+        
+        #left {
+            width: 480px;
+            height: 300px;
+            position: relative;
+            cursor: move;
+        }
+        
+        #left img {
+            width: 480px;
+            height: 300px;
+            display: block;
+            border: 0;
+        }
+        
+        #mb {
+            width: 480px;
+            height: 300px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+        
+        #ball {
+            width: 120px;
+            height: 75px;
+            background: #008df4;
+            opacity: 0.4;
+            filter: alpha(opacity=40);
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .show {
+            display: block;
+        }
+        
+        .hide {
+            display: none;
+        }
+        
+        #right {
+            width: 480px;
+            height: 300px;
+            position: absolute;
+            top: 0;
+            right: -500px;
+            overflow: hidden;
+        }
+        
+        #right img {
+            width: 1920px;
+            height: 1200px;
+            display: block;
+            border: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: all 0.2s ease-out;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div id="left">
+            <img src="images/p1.jpg" alt="">
+            <div id="ball" class="hide"></div>
+            <div id="mb"></div>
+        </div>
+
+        <div id="right" class="hide">
+            <img id="bigImg" src="images/p1.jpg" alt="">
+        </div>
+    </div>
+</body>
+<script>
+    var box = document.getElementById('box'),
+        ball = document.getElementById('ball'),
+        right = document.getElementById('right'),
+        bigImg = document.getElementById('bigImg');
+
+    box.onmousemove = function(event) {
+        //显示小块和大图窗口
+        ball.className = right.className = 'show';
+        var e = event || window.event;
+        //计算是鼠标相对于左侧小图的坐标
+        var mouX = (e.offsetX || e.layerX) - ball.offsetWidth / 2;
+        var mouY = (e.offsetY || e.layerY) - ball.offsetHeight / 2;
+        //边界检测
+        if (mouX <= 0) {
+            mouX = 0;
+        } else if (mouX >= (box.clientWidth - ball.offsetWidth)) {
+            mouX = (box.clientWidth - ball.offsetWidth)
+        }
+
+        if (mouY <= 0) {
+            mouY = 0;
+        } else if (mouY >= (box.clientHeight - ball.offsetHeight)) {
+            mouY = (box.clientHeight - ball.offsetHeight)
+        }
+
+        //小蓝块跟随
+        ball.style.left = mouX + 'px';
+        ball.style.top = mouY + 'px';
+        //大图跟随
+        bigImg.style.left = -mouX * 4 + 'px';
+        bigImg.style.top = -mouY * 4 + 'px';
+    }
+
+    box.onmouseleave = function() {
+        ball.className = right.className = 'hide';
+    }
+
+</script>
+
+</html>

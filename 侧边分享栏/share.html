@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>分享侧边栏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #box {
+            position: fixed;
+            top: 100px;
+            left: -200px;
+            width: 200px;
+            height: 300px;
+        }
+        
+        .inner {
+            width: 200px;
+            height: 300px;
+            background: blue;
+        }
+        
+        #share_btn {
+            position: absolute;
+            width: 20px;
+            height: 60px;
+            font-size: 20px;
+            padding: 5px;
+            right: -30px;
+            top: 0;
+            background: red;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div class="inner"></div>
+        <div id="share_btn">分享</div>
+    </div>
+</body>
+<script>
+    function $(id) {
+        return document.getElementById(id);
+    }
+    var l = -200;
+    var speed = 2;
+    var timer;
+    var flag = true;
+
+    $('share_btn').onclick = function() {
+        clearInterval(timer);
+        if (flag) {
+            speed = Math.abs(speed);
+            flag = false;
+        } else {
+            speed = -speed;
+            flag = true;
+        }
+        timer = setInterval(function() {
+            l += speed;
+            if (l == 0 || l == -200) {
+                clearInterval(timer);
+            }
+            $('box').style.left = l + 'px';
+        }, 10);
+    }
+
+</script>
+
+</html>

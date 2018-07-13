@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>留言板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .box {
+            width: 600px;
+            margin: 0 auto;
+        }
+        
+        #form_box {
+            width: 100%;
+            position: relative;
+        }
+        
+        #form_box textarea {
+            width: 598px;
+            height: 120px;
+            max-width: 598px;
+            max-height: 120px;
+            border: 1px solid #3388ff;
+            display: block;
+        }
+        
+        #form_box input {
+            width: 80px;
+            height: 30px;
+            border: 0;
+            background: #3388ff;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            color: #ffffff;
+        }
+        
+        #info_box {
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        #info_box>div {
+            width: 600px;
+            min-height: 60px;
+            border: 1px solid #bbbbbb;
+            padding: 10px;
+            box-sizing: border-box;
+            position: relative;
+        }
+        
+        #info_box h6 {
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+            background: red;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 2px 5px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <form action="" id="form_box">
+            <textarea name="info" id="input_box"></textarea>
+            <input type="button" value="发表" id="push_btn">
+        </form>
+        <div id="info_box"></div>
+    </div>
+</body>
+<script>
+    function $(id) {
+        return document.getElementById(id);
+    }
+    
+    $('push_btn').onclick = function() {
+        var val = $('input_box').value;
+        if(val==''){
+            return;
+        }
+        //创建信息
+        var oDiv = document.createElement('div');
+        var oP = document.createElement('p');
+        oP.innerHTML = val;
+        var oH6 = document.createElement('h6');
+        oH6.innerHTML = '删除';
+        //删除
+        oH6.onclick = function(){
+            //this.parentNode.parentNode.removeChild(this.parentNode);
+            $('info_box').removeChild(this.parentNode);
+        }
+        //插入
+        oDiv.appendChild(oP);
+        oDiv.appendChild(oH6);
+        $('info_box').insertBefore(oDiv,$('info_box').children[0]);
+        //文本域清空
+        $('input_box').value = '';
+    }
+
+</script>
+
+</html>

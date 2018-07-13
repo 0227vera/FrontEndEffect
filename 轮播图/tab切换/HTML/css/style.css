@@ -1,0 +1,86 @@
+#box {
+	height: 384px;
+	width: 600px;
+	margin: 100px auto;
+	position: relative;
+	overflow: hidden;
+	border: 1px solid pink;
+}
+
+#scroll {
+	height: 384px;
+	width: 3600px;
+	position: absolute;
+	overflow: hidden;
+}
+
+#scroll li {
+	float: left;
+	height: 384px;
+	width: 600px;
+	list-style: none;
+}
+
+#scroll a {
+	display: block;
+}
+
+#scroll img {
+	height: 384px;
+	width: 600px;
+}
+
+#point_btns {
+	overflow: hidden;
+	width: 150px;
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 15px;
+	position: absolute;
+	bottom: 10px;
+	left: 200px;
+}
+
+#point_btns a {
+	float: left;
+	width: 20px;
+	height: 20px;
+	margin: 5px;
+	border-radius: 10px;
+	background: #ffffff;
+	z-index: 5;
+}
+
+#point_btns .high_light {
+	background: red;
+}
+
+#prev,
+#next {
+	font-size: 24px;
+	line-height: 60px;
+	text-align: center;
+	font-family: "黑体";
+	width: 30px;
+	color: #fff;
+	height: 60px;
+	position: absolute;
+	background: rgba(0, 0, 0, 0.5);
+	top: 161px;
+	text-decoration: none;
+}
+
+#prev {
+	left: 0;
+}
+
+#next {
+	right: 0;
+}
+
+.hide {
+	display: none;
+}
+
+.show {
+	display: block;
+}
