@@ -12,12 +12,45 @@
 
 </body>
 <script>
-    (function() {
+    (function () {
         // 利用toString()更加精确检验类型
-        function type (type) {
+        function type(type) {
             return Object.prototype.toString.call(type).match(/\[object (.*?)\]/)[1].toLowerCase();
         }
-        console.log(type(new Date()));
+
+        // 用Objec上面的方法对象的拷贝
+        function extend(to, from) {
+            for (let property in from) {
+                if (!from.hasOwnProperty(property)) continue;
+                Object.defineProperty(
+                    to,
+                    property,
+                    Object.getOwnPropertyDescriptor(from, property)
+                );
+            }
+
+            return to;
+        }
+
+        // 生成随机数的函数
+        function getRandomArbitrary(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        // 生成随机字符的函数(任意长度)
+
+        function random_str(length) {
+            let ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            ALPHABET += 'abcdefghijklmnopqrstuvwxyz';
+            ALPHABET += '0123456789-_';
+            let str = '';
+            for (let i = 0; i < length; ++i) {
+                let rand = Math.floor(Math.random() * ALPHABET.length);
+                str += ALPHABET.substring(rand, rand + 1);
+            }
+            return str;
+        }
+        console.log(extend({}, { a: 1, b: 2, c: 3 }));
     }());
 </script>
 
